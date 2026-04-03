@@ -105,6 +105,10 @@
     text-align: center;
     padding: 120px 32px 60px;
     position: relative; z-index: 2;
+    overflow: hidden;
+  }
+  #hero > div {
+    width: 100%; max-width: 100%;
   }
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -115,12 +119,13 @@
   .hero-eyebrow span { width: 32px; height: 1px; background: var(--neon-blue); display: block; }
   .hero-title {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(3.5rem, 9vw, 8.5rem);
-    font-weight: 800; line-height: .95;
-    letter-spacing: -.03em;
+    font-size: clamp(1.8rem, 8vw, 8.5rem);
+    font-weight: 800; line-height: 1;
+    letter-spacing: -.02em;
     opacity: 0; transform: translateY(40px);
+    width: 100%; overflow-wrap: break-word; word-break: break-word;
   }
-  .hero-title .line { display: block; overflow: hidden; }
+  .hero-title .line { display: block; overflow: hidden; max-width: 100%; }
   .hero-title .accent {
     background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 50%, var(--neon-pink) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -226,6 +231,56 @@
     letter-spacing: -.02em;
   }
   .section-title em { font-style: normal; color: var(--neon-blue); }
+
+  /* HORIZONTAL GALLERY */
+  #gallery { padding: 100px 0 40px; position: relative; z-index: 2; }
+
+  .auto-scroll {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .scroll-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 20s linear infinite;
+  }
+
+  .scroll-item {
+    min-width: 320px;
+    margin-right: 18px;
+    background: var(--card-glass);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .scroll-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .scroll-item figcaption {
+    padding: 12px 14px;
+    color: var(--text-muted);
+    font-size: .78rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* Pause on hover */
+  .auto-scroll:hover .scroll-track {
+    animation-play-state: paused;
+  }
+
+  /* Animation */
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
 
   /* STUDENT CARDS */
   #students { padding: 100px 0; position: relative; z-index: 2; }
@@ -409,27 +464,258 @@
     font-size: .75rem; color: var(--text-muted); letter-spacing: .06em;
   }
 
+  /* NAV HAMBURGER */
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+    flex-shrink: 0;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--text-primary); border-radius: 2px;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
   /* FOOTER */
   footer {
     padding: 60px 48px; position: relative; z-index: 2;
     border-top: 1px solid var(--card-border);
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
   }
   .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .95rem; letter-spacing: .1em; }
   .footer-copy { color: var(--text-muted); font-size: .78rem; }
 
-  /* RESPONSIVE */
+  /* COORDINATORS */
+  #coordinators { padding: 100px 0 80px; position: relative; z-index: 2; }
+
+  .coord-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 28px;
+    margin-top: 0;
+  }
+
+  .coord-card {
+    background: var(--card-glass);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    text-align: center;
+    padding-bottom: 28px;
+    position: relative;
+    transition: transform .3s, border-color .3s;
+  }
+  .coord-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,212,255,0.25);
+  }
+  .coord-card::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 22px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(180,0,255,0.05));
+    opacity: 0; transition: opacity .3s; pointer-events: none;
+  }
+  .coord-card:hover::before { opacity: 1; }
+
+  .coord-banner {
+    height: 90px;
+    background: linear-gradient(135deg, var(--c1, #00d4ff), var(--c2, #b400ff));
+    position: relative;
+  }
+
+  .coord-photo {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--dark-bg);
+    background: var(--card-glass);
+    object-fit: cover;
+    position: absolute;
+    bottom: -45px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 0 2px var(--card-border), 0 8px 24px rgba(0,0,0,0.4);
+  }
+  /* fallback initials avatar */
+  .coord-avatar {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--dark-bg);
+    background: linear-gradient(135deg, var(--c1, #00d4ff), var(--c2, #b400ff));
+    position: absolute;
+    bottom: -45px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: #fff;
+    box-shadow: 0 0 0 2px var(--card-border), 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .coord-body {
+    padding: 56px 20px 0;
+  }
+  .coord-role {
+    font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--neon-purple); margin-bottom: 8px;
+  }
+  .coord-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.05rem; margin-bottom: 4px;
+  }
+  .coord-dept {
+    color: var(--text-muted); font-size: .78rem; margin-bottom: 20px;
+  }
+  .coord-contacts {
+    display: flex; flex-direction: column; gap: 10px;
+    border-top: 1px solid var(--card-border);
+    padding-top: 18px; margin: 0 20px;
+  }
+  .coord-contact-row {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.03); border-radius: 10px;
+    padding: 9px 14px;
+    text-decoration: none;
+    transition: background .25s;
+    overflow: hidden;
+  }
+  .coord-contact-row:hover { background: rgba(0,212,255,0.08); }
+  .coord-contact-icon {
+    font-size: 1rem; flex-shrink: 0; line-height: 1;
+  }
+  .coord-contact-text {
+    font-size: .75rem; color: var(--text-muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-align: left;
+  }
+  .coord-contact-row:hover .coord-contact-text { color: var(--neon-blue); }
+
   @media (max-width: 900px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .stat-card:first-child { border-radius: 20px 0 0 0; }
-    .stat-card:last-child { border-radius: 0 0 20px 0; }
-    .metrics-grid { grid-template-columns: 1fr; }
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
+    #coordinators { padding: 70px 0 56px; }
+    .coord-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
   }
   @media (max-width: 600px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .container { padding: 0 20px; }
+    #coordinators { padding: 52px 0 40px; }
+    .coord-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .coord-card { padding-bottom: 20px; }
+    .coord-banner { height: 70px; }
+    .coord-avatar, .coord-photo { width: 70px; height: 70px; bottom: -35px; font-size: 1.1rem; }
+    .coord-body { padding-top: 44px; }
+    .coord-contacts { margin: 0 12px; padding-top: 14px; }
+    .coord-contact-row { padding: 7px 10px; }
+    .coord-contact-text { font-size: .68rem; }
+  }
+  @media (max-width: 400px) {
+    .coord-grid { grid-template-columns: 1fr; }
+  }
+
+  /* RESPONSIVE */
+
+  /* Touch devices — disable custom cursor */
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    #cursor, #cursor-ring { display: none; }
+  }
+
+  /* Large tablet ≤1100px */
+  @media (max-width: 1100px) {
+    .container { padding: 0 28px; }
+    .stat-card { padding: 44px 28px; }
+  }
+
+  /* Tablet ≤900px */
+  @media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    .nav-badge { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4,5,13,0.97);
+      backdrop-filter: blur(24px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 40px; z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { font-size: 1.4rem; letter-spacing: .1em; }
+
+    #hero { padding: 100px 20px 48px; }
+    .hero-eyebrow { font-size: .68rem; letter-spacing: .12em; }
+    .hero-sub { font-size: .95rem; max-width: 100%; }
+    .hero-cta { gap: 12px; margin-top: 36px; }
+
+    #stats { padding: 70px 0; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-card { padding: 40px 24px; }
+    .stat-card:first-child  { border-radius: 20px 0 0 0; }
+    .stat-card:nth-child(2) { border-radius: 0 20px 0 0; }
+    .stat-card:nth-child(3) { border-radius: 0 0 0 20px; }
+    .stat-card:last-child   { border-radius: 0 0 20px 0; }
+    .stat-num { font-size: 2.8rem; }
+
+    #companies { padding: 52px 0; }
+    .fade-left, .fade-right { width: 80px; }
+    .company-chip { padding: 14px 28px; }
+
+    #gallery { padding: 70px 0 30px; }
+    .scroll-item { min-width: 270px; }
+    .scroll-item img { height: 190px; }
+
+    #students { padding: 70px 0; }
+    .section-header { margin-bottom: 52px; }
+
+    footer { padding: 40px 32px; }
+  }
+
+  /* Mobile ≤600px */
+  @media (max-width: 600px) {
+    .container { padding: 0 16px; }
+    nav { padding: 14px 16px; }
+
+    #hero { padding: 80px 16px 36px; }
+    .hero-title { font-size: clamp(1.6rem, 9vw, 3rem); line-height: 1.05; letter-spacing: -.01em; }
+    .hero-eyebrow { font-size: .62rem; letter-spacing: .1em; gap: 6px; }
+    .hero-eyebrow span { width: 20px; }
+    .hero-sub { font-size: .88rem; margin-top: 18px; }
+    .hero-cta { margin-top: 28px; gap: 10px; }
+    .btn-primary, .btn-ghost { padding: 13px 24px; font-size: .83rem; }
+    .scroll-hint { display: none; }
+
+    #stats { padding: 52px 0; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+    .stat-card { padding: 32px 16px; }
+    .stat-num { font-size: 2.2rem; }
+    .stat-label { font-size: .7rem; }
+
+    #companies { padding: 40px 0; }
+    .company-chip { padding: 12px 20px; font-size: .8rem; }
+    .fade-left, .fade-right { width: 48px; }
+
+    #gallery { padding: 52px 0 24px; }
+    .scroll-item { min-width: 230px; }
+    .scroll-item img { height: 160px; }
+    .section-header { margin-bottom: 36px; }
+
+    #students { padding: 52px 0; }
+    .cards-grid { grid-template-columns: 1fr; }
+
+    footer { flex-direction: column; align-items: center; text-align: center; padding: 32px 16px; }
+
+    .orb-1 { width: 280px; height: 280px; }
+    .orb-2 { width: 200px; height: 200px; }
+  }
+
+  /* Very small ≤400px */
+  @media (max-width: 400px) {
+    .scroll-item { min-width: 200px; }
+    .scroll-item img { height: 140px; }
+    .stat-num { font-size: 1.9rem; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-ghost { width: 100%; text-align: center; padding: 14px 20px; }
   }
 
   /* Gradient orbs */
@@ -456,13 +742,19 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">PLACEMENT&nbsp;PORTAL</div>
-  <div class="nav-links">
+  <div class="nav-links" id="nav-links">
     <a href="#stats">Overview</a>
     <a href="#students">Students</a>
     <a href="#companies">Companies</a>
-    <a href="#metrics">Insights</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#coordinators">Contact</a>
   </div>
-  <div class="nav-badge">Class of 2025</div>
+  <div class="nav-right">
+    <div class="nav-badge">Class of 2025</div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -525,6 +817,71 @@
   <div class="carousel-track" id="marquee"></div>
 </section>
 
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Campus Moments</div>
+      <h2 class="section-title">Gallery <em>Highlights</em></h2>
+    </div>
+
+    <div class="auto-scroll" aria-label="Horizontal gallery of placement event photos">
+      <div class="scroll-track">
+        <!-- original set -->
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Students collaborating during a placement workshop">
+          <figcaption>Workshop Session</figcaption>
+        </figure>
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=900&q=80" alt="Campus interview discussion in progress">
+          <figcaption>Interview Prep</figcaption>
+        </figure>
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="Team sharing placement success news">
+          <figcaption>Success Stories</figcaption>
+        </figure>
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Students networking with recruiters at campus event">
+          <figcaption>Recruiter Meet</figcaption>
+        </figure>
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=900&q=80" alt="Placement cell presenting annual report">
+          <figcaption>Placement Drive</figcaption>
+        </figure>
+        <figure class="scroll-item">
+          <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80" alt="Students celebrating final offer letters">
+          <figcaption>Offer Day</figcaption>
+        </figure>
+        <!-- duplicate set for seamless loop -->
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Workshop Session</figcaption>
+        </figure>
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Interview Prep</figcaption>
+        </figure>
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Success Stories</figcaption>
+        </figure>
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Recruiter Meet</figcaption>
+        </figure>
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Placement Drive</figcaption>
+        </figure>
+        <figure class="scroll-item" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80" alt="">
+          <figcaption>Offer Day</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- STUDENTS -->
 <section id="students">
   <div class="container">
@@ -536,27 +893,60 @@
   </div>
 </section>
 
-<!-- METRICS -->
-<section id="metrics">
+<!-- COORDINATORS -->
+<section id="coordinators">
   <div class="container">
-    <div class="metrics-grid">
-      <div class="metrics-visual" id="bar-chart-wrap">
-        <div class="section-tag" style="margin-bottom:24px;">Branch-wise Placement %</div>
-        <div class="bar-chart" id="bar-chart"></div>
-      </div>
-      <div class="metrics-copy">
-        <div class="section-tag">Insights</div>
-        <h3>Placement <em style="color:var(--neon-blue)">Performance</em> at a Glance</h3>
-        <p>Our institution achieved a record-breaking placement season with 92% overall placement rate. Core engineering, tech, and consulting sectors led the hiring.</p>
-        <div class="metric-tags">
-          <span class="metric-tag">Engineering</span>
-          <span class="metric-tag">Technology</span>
-          <span class="metric-tag">Consulting</span>
-          <span class="metric-tag">Finance</span>
-          <span class="metric-tag">Product</span>
-          <span class="metric-tag">Research</span>
+    <div class="section-header">
+      <div class="section-tag">Get In Touch</div>
+      <h2 class="section-title">Placement <em>Coordinators</em></h2>
+    </div>
+
+    <div class="coord-grid">
+
+      <!-- Placement Coordinator -->
+      <div class="coord-card">
+        <div class="coord-banner" style="--c1:#00d4ff;--c2:#b400ff;">
+          <div class="coord-avatar" style="--c1:#00d4ff;--c2:#b400ff;">RK</div>
+        </div>
+        <div class="coord-body">
+          <div class="coord-role">Placement Coordinator</div>
+          <div class="coord-name">Dr. Rajesh Kumar</div>
+          <div class="coord-dept">Training &amp; Placement Cell</div>
+        </div>
+        <div class="coord-contacts">
+          <a class="coord-contact-row" href="mailto:rajesh.kumar@college.edu">
+            <span class="coord-contact-icon">✉</span>
+            <span class="coord-contact-text">rajesh.kumar@college.edu</span>
+          </a>
+          <a class="coord-contact-row" href="tel:+919876543210">
+            <span class="coord-contact-icon">📞</span>
+            <span class="coord-contact-text">+91 98765 43210</span>
+          </a>
         </div>
       </div>
+
+      <!-- Student Coordinator -->
+      <div class="coord-card">
+        <div class="coord-banner" style="--c1:#ff006e;--c2:#ffaa00;">
+          <div class="coord-avatar" style="--c1:#ff006e;--c2:#ffaa00;">AS</div>
+        </div>
+        <div class="coord-body">
+          <div class="coord-role">Student Coordinator</div>
+          <div class="coord-name">Arjun Sharma</div>
+          <div class="coord-dept">CSE Final Year</div>
+        </div>
+        <div class="coord-contacts">
+          <a class="coord-contact-row" href="mailto:arjun.sharma@college.edu">
+            <span class="coord-contact-icon">✉</span>
+            <span class="coord-contact-text">arjun.sharma@college.edu</span>
+          </a>
+          <a class="coord-contact-row" href="tel:+919876543212">
+            <span class="coord-contact-icon">📞</span>
+            <span class="coord-contact-text">+91 98765 43212</span>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -585,15 +975,6 @@ const students = [
 ];
 
 const companies = ["Google","Microsoft","Amazon","Wipro","Infosys","TCS","Qualcomm","Intel","Siemens","Tesla","L&T","Flipkart","Zomato","PhonePe","Swiggy","BYJU'S","Razorpay","Freshworks","Zoho","Capgemini","Accenture","IBM","Oracle","Cognizant","HCL","Deloitte","McKinsey","JP Morgan","Goldman Sachs","PayPal"];
-
-const branches = [
-  {label:"CSE",  pct:97, color:"linear-gradient(90deg,#00d4ff,#b400ff)"},
-  {label:"IT",   pct:94, color:"linear-gradient(90deg,#b400ff,#ff006e)"},
-  {label:"ECE",  pct:89, color:"linear-gradient(90deg,#ff006e,#ffaa00)"},
-  {label:"EEE",  pct:82, color:"linear-gradient(90deg,#ffaa00,#00ff88)"},
-  {label:"MECH", pct:78, color:"linear-gradient(90deg,#00ff88,#00d4ff)"},
-  {label:"CIVIL",pct:72, color:"linear-gradient(90deg,#00d4ff,#b400ff)"},
-];
 
 /* ===== BUILD STUDENT CARDS ===== */
 const grid = document.getElementById('cards-grid');
@@ -669,17 +1050,7 @@ allCo.forEach(c => {
   marquee.appendChild(chip);
 });
 
-/* ===== BUILD BAR CHART ===== */
-const barChart = document.getElementById('bar-chart');
-branches.forEach(b => {
-  const row = document.createElement('div');
-  row.className = 'bar-row';
-  row.innerHTML = `
-    <div class="bar-label">${b.label}</div>
-    <div class="bar-track"><div class="bar-fill" data-pct="${b.pct}" style="background:${b.color}"></div></div>
-    <div class="bar-pct">${b.pct}%</div>`;
-  barChart.appendChild(row);
-});
+/* gallery auto-scroll handled by CSS @keyframes scroll */
 
 /* ===== THREE.JS BACKGROUND ===== */
 (function initThree() {
@@ -801,26 +1172,6 @@ document.querySelectorAll('.card-wrap').forEach((card, i) => {
   });
 });
 
-// Bar chart
-ScrollTrigger.create({
-  trigger: '#bar-chart-wrap', start: 'top 75%', once: true,
-  onEnter: () => {
-    document.querySelectorAll('.bar-fill').forEach((b, i) => {
-      setTimeout(() => { b.style.width = b.dataset.pct + '%'; }, i * 120);
-    });
-  }
-});
-
-// Metrics copy
-gsap.from('.metrics-copy', {
-  scrollTrigger: { trigger:'.metrics-copy', start:'top 80%', once:true },
-  x: 50, opacity:0, duration:.9, ease:'power3.out'
-});
-gsap.from('.metrics-visual', {
-  scrollTrigger: { trigger:'.metrics-visual', start:'top 80%', once:true },
-  x: -50, opacity:0, duration:.9, ease:'power3.out'
-});
-
 // Section headers
 document.querySelectorAll('.section-header').forEach(h => {
   gsap.from(h, {
@@ -828,6 +1179,34 @@ document.querySelectorAll('.section-header').forEach(h => {
     y:40, opacity:0, duration:.8, ease:'power3.out'
   });
 });
+
+// Coordinator cards
+document.querySelectorAll('.coord-card').forEach((card, i) => {
+  gsap.from(card, {
+    scrollTrigger: { trigger: card, start: 'top 88%', once: true },
+    y: 50, opacity: 0, duration: .7, delay: i * 0.1, ease: 'power3.out'
+  });
+});
+
+/* ===== MOBILE NAV ===== */
+const navHamburger = document.getElementById('nav-hamburger');
+const navLinksEl   = document.getElementById('nav-links');
+if (navHamburger && navLinksEl) {
+  navHamburger.addEventListener('click', () => {
+    const isOpen = navLinksEl.classList.toggle('open');
+    navHamburger.classList.toggle('open', isOpen);
+    navHamburger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  navLinksEl.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinksEl.classList.remove('open');
+      navHamburger.classList.remove('open');
+      navHamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+}
 </script>
 </body>
 </html>
